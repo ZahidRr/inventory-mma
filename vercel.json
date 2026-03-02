@@ -2,7 +2,7 @@
     "version": 2,
     "functions": {
         "api/index.php": {
-            "runtime": "vercel-php@0.7.5"
+            "runtime": "vercel-php@0.8.0"
         }
     },
     "routes": [
@@ -16,5 +16,6 @@
         }
     ],
     "installCommand": "composer install --no-dev && npm install",
-    "buildCommand": "npm run build"
+    "buildCommand": "npm run build",
+    "outputDirectory": "public"
 }
