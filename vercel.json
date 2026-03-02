@@ -1,17 +1,21 @@
 {
     "version": 2,
-    "framework": null,
+    "framework": "laravel",
     "functions": {
-        "api/*.php": { "runtime": "vercel-php@0.7.0" }
+        "api/index.php": {
+            "runtime": "vercel-php@0.7.5"
+        }
     },
     "routes": [
         {
-            "src": "/(css|js|images|favicon.ico)(.*)",
+            "src": "/(css|js|images|favicon.ico|robots.txt)(.*)",
             "dest": "/public/$1$2"
         },
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
-    ]
+    ],
+    "installCommand": "composer install --no-dev && npm install",
+    "buildCommand": "npm run build"
 }
