@@ -1,13 +1,26 @@
 <?php
+require __DIR__.'/../vendor/autoload.php';
 
-// 1. Paksa environment variable dari dalam kode PHP
-$_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
-$_SERVER['VIEW_COMPILED_PATH'] = '/tmp/views';
+// 1. Bikin semua folder yang dibutuhkan Laravel di dalam /tmp/ (satu-satunya tempat yang tidak dikunci Vercel)
+$tmpStorage = '/tmp/storage';
+$paths = [
+    "$tmpStorage/framework/views",
+    "$tmpStorage/framework/cache/data",
+    "$tmpStorage/framework/sessions",
+    "$tmpStorage/logs"
+];
 
-// 2. Buat folder sementara
-if (!file_exists('/tmp/views')) {
-    mkdir('/tmp/views', 0777, true);
+foreach ($paths as $path) {
+    if (!is_dir($path)) {
+        @mkdir($path, 0777, true);
+    }
 }
 
-// 3. Teruskan ke Laravel
-require __DIR__ . '/../public/index.php';
+// 2. Panggil mesin Laravel
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+// 3. Paksa Laravel pakai folder /tmp/ yang sudah kita buat
+$app->useStoragePath($tmpStorage);
+
+// 4. Nyalakan website!
+$app->handleRequest(Illuminate\Http\Request::capture());
